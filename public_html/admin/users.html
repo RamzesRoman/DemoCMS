@@ -1,0 +1,31 @@
+{%extends 'index.html' %}
+
+
+{%block content %}
+<TABLE class="table" id="users">
+<TR><TH>#</TH><TH>Назва</TH><TH>Email</TH><TH>Доступ</TH><TH></TH></TR>
+</TABLE>
+
+
+<SCRIPT>
+
+$.ajax(  {
+  type: "GET",
+  url: "/api/users",
+  success: function(res){
+    var k=1;
+    for( i in res ){
+      $("#users").append("<TR>"
+        + "<TD>" + k + "</TD>"
+        + "<TD>" + res[i][1] + "</TD>"
+        + "<TD>" + res[i][2] + "</TD>"
+        + "<TD>" + res[i][3] + "</TD>"
+        + "<TD><a href=\"admin/user.html?id=" + res[i][0] +"\">Редагувати</a></TD>"
+        +"</TR>");
+      k++;
+    }
+  }
+});
+
+</SCRIPT>
+{%endblock%}
