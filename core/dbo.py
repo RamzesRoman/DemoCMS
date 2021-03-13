@@ -78,7 +78,7 @@ class DBO:
     return self.execute(sql)
 
   def delete(self,id):
-    sql="DELETE FROM \"" + self.__table_name + "\" WHERE id=" + str(id)
+    sql="DELETE FROM \"" + self.__table_name + "\" WHERE id='" + str(id) + "'"
     res=self.execute(sql,self.ROWCOUNT)
     return None
 

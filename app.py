@@ -17,20 +17,19 @@ app.register_blueprint(authorization)
 
 @app.before_request
 def load_user():
-
+    user_data={}
     if "sess_id" in request.cookies:
         sess=Session()
         s=sess.read(request.cookies["sess_id"])
-        user=User()
-        user_data=user.read(s["user_id"])
+        if not s is None and "user_id" in s:
+          user=User()
+          user_data=user.read(s["user_id"])
         pass
-    else:
-        user_data = {}  # Make it better, use an anonymous User instead
     g.user = user_data
 
-@app.route('/static/<path:path>')
+@app.route('/static/css/<path:path>')
 def send_static(path):
-    return send_from_directory('public_html', path)
+    return send_from_directory('public_html/css/', path)
 
 @app.route('/')
 def index_page():
