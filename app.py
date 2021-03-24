@@ -5,11 +5,13 @@ from core.protected import protected
 from core.models.user import User
 from core.models.session import Session
 from core.routes.user import app as user
+from core.routes.access import app as access
 from core.routes.authorization import app as authorization
 
 
 app = Flask(__name__,template_folder='public_html')
 app.register_blueprint(user)
+app.register_blueprint(access)
 app.register_blueprint(authorization)
 
 #u=User()
@@ -28,22 +30,25 @@ def load_user():
     g.user = user_data
 
 @app.route('/static/css/<path:path>')
-def send_static(path):
+def send_static_css(path):
     return send_from_directory('public_html/css/', path)
+@app.route('/static/js/<path:path>')
+def send_static_js(path):
+    return send_from_directory('public_html/js/', path)
 
-@app.route('/')
+@app.route('/',methods=["GET"])
 def index_page():
-    return make_response(render_template("index.html"))
+    return make_response(render_template("index.html",params=request.args.to_dict()))
 
-@app.route('/<page>.html')
+@app.route('/<page>.html',methods=["GET"])
 def get_page(page):
-    return make_response(render_template(page + ".html"))
+    return make_response(render_template(page + ".html",params=request.args.to_dict()))
 
 
-@app.route('/admin/<page>.html')
-@protected
+@app.route('/admin/<page>.html',methods=["GET"])
+@protected('admin')
 def get_admin_page(page):
-    return make_response(render_template("admin/" +page + ".html"))
+    return make_response(render_template("admin/" +page + ".html",params=request.args.to_dict()))
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0',port=3000, debug=True)

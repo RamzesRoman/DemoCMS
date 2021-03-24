@@ -1,11 +1,22 @@
 from functools import wraps
 from flask import g, request, redirect, url_for
+from core.models.access import Access
 
-def protected(f):
-    @wraps(f)
-    def decorated_function(*args, **kwargs):
-        print(" [x] User: " + str(g.user.get("id")))
-        if g.user.get("id") is None:
-            return redirect('/login.html?u=' + request.url)
-        return f(*args, **kwargs)
-    return decorated_function
+def protected(access=""):
+  def protected_decorator(f):
+      @wraps(f)
+      def decorated_function(*args, **kwargs):
+          if not g.user is None:
+              if not g.user.get("id") is None:
+                  a=Access()
+                  access_data=a.read(g.user.get("access_id"))
+                  print(" [x] Access: " + str(access_data))
+                  print(" [x] User: " + str(g.user.get("id")))
+                  print(" [x] User access: " + str(g.user.get("access_id")))
+
+                  if access_data.get('name') == access:
+                      return f(*args, **kwargs)
+          return redirect('/login.html?u=' + request.url)
+          
+      return decorated_function
+  return protected_decorator
