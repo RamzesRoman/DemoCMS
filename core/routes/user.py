@@ -1,4 +1,4 @@
-from flask import Flask, redirect, render_template, make_response, escape,request, jsonify, Blueprint
+from flask import Flask, redirect, render_template, make_response, escape,request, jsonify, Blueprint, g
 from core.models.user import User
 from core.protected import protected
 import json
@@ -59,17 +59,16 @@ def login():
           raise Exception("Паролі не співпадають")
       if request.form["name"] == "":
           raise Exception("Ім'я не може бути пустим")
-      if request.form["password"] =="":
-          raise Exception("Пароль не може бути пустим")
-      if len(request.form["password"]) < 6:
+      if  len(request.form["password"]) >0 and  len(request.form["password"]) < 6:
           raise Exception("Пароль не може менше 6ти знаків")
       if request.form["password"]:
           data["pass"]=request.form["password"]
       u=User()
       data["name"]=request.form["name"]
+      data["access_id"]=request.form["access_id"]
       user=u.update(request.args.get("id"), data)
       return make_response(redirect("/admin/users.html"))
 
     except Exception as e:
       print(e)
-      return make_response(render_template("admin/user.html",error=str(e),params=request.args.to_dict()))
+      return make_response(render_template("admin/user.html",error=str(e),params=request.args.to_dict(),user=g.user))

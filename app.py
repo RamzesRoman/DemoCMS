@@ -38,17 +38,17 @@ def send_static_js(path):
 
 @app.route('/',methods=["GET"])
 def index_page():
-    return make_response(render_template("index.html",params=request.args.to_dict()))
+    return make_response(render_template("index.html",params=request.args.to_dict(), user=g.user))
 
 @app.route('/<page>.html',methods=["GET"])
 def get_page(page):
-    return make_response(render_template(page + ".html",params=request.args.to_dict()))
+    return make_response(render_template(page + ".html",params=request.args.to_dict(), user=g.user))
 
 
 @app.route('/admin/<page>.html',methods=["GET"])
 @protected('admin')
 def get_admin_page(page):
-    return make_response(render_template("admin/" +page + ".html",params=request.args.to_dict()))
+    return make_response(render_template("admin/" +page + ".html",params=request.args.to_dict(), user=g.user))
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0',port=3000, debug=True)

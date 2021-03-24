@@ -7,10 +7,14 @@
       <div class="container-fluid">
           <H2>Сервіс</H2>
 
-<UL>
-<LI><a href="/admin/users.html">Користувачі</a></LI>
-<LI><a href="/accesses.html">Доступи</a></LI>
-<LI><a href="/logout">Вихід</a></LI>
+<UL class="nav justify-content-center">
+<LI class="nav-item"><a class="nav-link" href="/admin/users.html">Користувачі</a></LI>
+<LI class="nav-item"><a class="nav-link" href="/accesses.html">Доступи</a></LI>
+{% if user["Name"] %}
+<LI class="nav-item"><a class="nav-link" href="/logout">Вихід "{{user["Name"]}}"</a></LI>
+{%else%}
+<LI class="nav-item"><a class="nav-link" href="/login.html">Вхід</a></LI>
+{%endif%}
 </UL>
 
 {%block content%}
