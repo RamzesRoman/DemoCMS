@@ -8,14 +8,17 @@ def protected(access=""):
       def decorated_function(*args, **kwargs):
           if not g.user is None:
               if not g.user.get("id") is None:
-                  a=Access()
-                  access_data=a.read(g.user.get("access_id"))
-                  print(" [x] Access: " + str(access_data))
-                  print(" [x] User: " + str(g.user.get("id")))
-                  print(" [x] User access: " + str(g.user.get("access_id")))
+                  try:
+                      a=Access()
+                      access_data=a.read(g.user.get("access_id"))
+                      print(" [x] Access: " + str(access_data))
+                      print(" [x] User: " + str(g.user.get("id")))
+                      print(" [x] User access: " + str(g.user.get("access_id")))
 
-                  if access_data.get('name') == access:
-                      return f(*args, **kwargs)
+                      if access_data.get('name') == access:
+                          return f(*args, **kwargs)
+                  except:
+                      pass
           return redirect('/login.html?u=' + request.url)
           
       return decorated_function
