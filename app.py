@@ -15,7 +15,7 @@ app.register_blueprint(access)
 app.register_blueprint(authorization)
 
 #u=User()
-#u.create({"name":"Nikolay","email":"test2@mail.com","pass":"qwerty1234"})
+#u.create({"name":"Ronaka","email":"cvoyn@mail.com","pass":"qwe123qwe"})
 
 @app.before_request
 def load_user():
@@ -51,4 +51,4 @@ def get_admin_page(page):
     return make_response(render_template("admin/" +page + ".html",params=request.args.to_dict(), user=g.user))
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0',port=3000, debug=True)
+    app.run(host='0.0.0.0',port=2999, debug=True)
